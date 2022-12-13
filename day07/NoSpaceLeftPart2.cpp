@@ -3,6 +3,8 @@
 #include<map>
 #include<fstream>
 #include<cctype>
+#include<vector>
+#include<algorithm>
 
 void	parentPath(std::string& path)
 {
@@ -50,14 +52,18 @@ int main()
 				refreshPathSizeValue(currentPath, stoi(line), pathSize);
 		}
 	}
+	size_t rootSize = pathSize["/"];
+	size_t sizeToRemove = rootSize - 40000000;
 	size_t res = 0;
 	std::map<std::string, size_t>::iterator it;
 	it = pathSize.begin();
+	std::vector<size_t> vec;
 	while (it != pathSize.end())
 	{
-		if (it->second <= 100000)
-			res += it->second;
+		if (it->second >= sizeToRemove)
+			vec.push_back(it->second);
 		++it;
 	}
-	std::cout << res << std::endl;
+	std::sort(vec.begin(), vec.end());
+	std::cout << *vec.begin() << std::endl;
 }
