@@ -3,42 +3,50 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include <algorithm>
+#include <stdlib.h>
 
-bool isCovered(std::vector< std::vector<int> >& forest, int i, int j)
+int sight(std::vector< std::vector<int> >& forest, int i, int j)
 {
 	int x = i, y = j;
-	while (--y >= 0)
+	int sight = 0, final_sight;
+	//left
+	for (y = j - 1; y >= 0 || y == j - 1; --y)
 	{
+		++sight;
 		if (forest[x][y] >= forest[i][j])
 			break;
 	}
-	if (y == -1)
-		return (false);
+	final_sight = sight;
+	sight = 0;
+	//right
+	for (y = j + 1; y < forest[i].size() || y == j + 1; ++y)
+	{
+		++sight;
+		if (forest[x][y] >= forest[i][j])
+			break;
+	}
+	final_sight *= sight;
+	sight = 0;
+	//up
 	y = j;
-	while (++y < forest[i].size())
+	for (x = i - 1; x >= 0 || x == i - 1; --x)
 	{
+		++sight;
 		if (forest[x][y] >= forest[i][j])
 			break;
 	}
-	if (y == forest[i].size())
-		return (false);
-	y = j;
-	while (--x >= 0)
+	final_sight *= sight;
+	sight = 0;
+	//down
+	for (x = i + 1; x < forest.size() || x == i + 1; ++x)
 	{
+		++sight;
 		if (forest[x][y] >= forest[i][j])
 			break;
 	}
-	if (x == -1)
-		return (false);
-	x = i;
-	while (++x < forest.size())
-	{
-		if (forest[x][y] >= forest[i][j])
-			break;
-	}
-	if (x == forest.size())
-		return (false);
-	return (true);
+	final_sight *= sight;
+	return (final_sight);
 }
 
 int main()
@@ -62,15 +70,16 @@ int main()
 			tmp.push_back(atoi(buf));
 		}
 	}
-	int res = 0;
+	std::vector<int> res;
 	for (int i = 0; i < forest.size(); ++i)
 	{
 		for (int j = 0; j < forest[i].size(); ++j)
 		{
-			if (i == 0 || i == forest.size() - 1 || j == 0 || j == forest[i].size() || !isCovered(forest, i, j))
-				++res;
+			if (i != 0 && i != forest.size() - 1 && j != 0 && j != forest[i].size() - 1)
+				res.push_back(sight(forest, i, j));
 		}
 	}
-	std::cout << res << std::endl;
+	std::sort(res.begin(), res.end());
+	std::cout << *(res.end() - 1) << std::endl;
 	return (0);
 }
