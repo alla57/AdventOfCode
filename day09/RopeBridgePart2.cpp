@@ -7,8 +7,8 @@
 
 void	getCloser(std::pair<int, int>& hPos, std::pair<int, int>& tPos)
 {
-	if (((hPos.first - tPos.first == 1 || hPos.first - tPos.first == -1) && (hPos.second - tPos.second > 1 || hPos.second - tPos.second < -1))
-		|| ((hPos.first - tPos.first > 1 || hPos.first - tPos.first < -1) && (hPos.second - tPos.second == 1 || hPos.second - tPos.second == -1)))
+	if ((abs(hPos.first - tPos.first) == 1 && abs(hPos.second - tPos.second) > 1)
+		|| (abs(hPos.first - tPos.first) > 1 && abs(hPos.second - tPos.second) == 1))
 	{
 		if (hPos.first - tPos.first >= 1)
 			++tPos.first;
@@ -25,7 +25,7 @@ void	getCloser(std::pair<int, int>& hPos, std::pair<int, int>& tPos)
 			++tPos.first;
 		else if (hPos.first - tPos.first <  -1)
 			--tPos.first;
-		else if (hPos.second - tPos.second > 1)
+		if (hPos.second - tPos.second > 1)
 			++tPos.second;
 		else if (hPos.second - tPos.second < -1)
 			--tPos.second;
@@ -42,10 +42,8 @@ int main()
 	std::map< std::string, std::pair<int, int> > moves = {{"L", {-1, 0}}, {"R", {1, 0}}, {"U", {0, 1}}, {"D", {0, -1}}};
 	std::string direction;
 	int step;
-	// int k = 0;
 	while (!inputFile.eof())
 	{
-		// ++k;
 		inputFile >> direction >> step;
 		for (int i = 0; i < step; ++i)
 		{
@@ -59,7 +57,6 @@ int main()
 			res.insert(tPos[8]);
 		}
 	}
-	for (std::set<std::pair<int, int>>::iterator it = res.begin(); it != res.end(); ++it)
-		std::cout << it->first << " " << it->second << std::endl;
+	std::cout << res.size() << std::endl;
 	return (0);
 }

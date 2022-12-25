@@ -24,7 +24,7 @@ void	getCloser(std::pair<int, int>& hPos, std::pair<int, int>& tPos, std::set< s
 			++tPos.first;
 		else if (hPos.first - tPos.first <  -1)
 			--tPos.first;
-		else if (hPos.second - tPos.second > 1)
+		if (hPos.second - tPos.second > 1)
 			++tPos.second;
 		else if (hPos.second - tPos.second < -1)
 			--tPos.second;
